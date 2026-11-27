@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Smart Life Planner – Live Demo</title>
+<style>
+:root{--bgi:linear-gradient(135deg,#e6f1ff 0%,#f1ecff 48%,#e3f8ec 100%);--bg:#eef3fb;--c:#fff;--ink:#111c2e;--mu:#44546e;--hd:#1F3A5F;--btn:#2F5D9B;--gr:#1B6E3C;--rd:#B3261E;--rdt:#B3261E;--gd:#F2C94C;--ln:#d8dfe9;--rw:#f2f5fa;--in:#f8fafd}
+:root[data-theme="dark"]{--rdt:#ff9a90;--bgi:linear-gradient(135deg,#0d1420 0%,#132743 55%,#0f2f20 100%);--bg:#0d1420;--c:#16233a;--ink:#f1f5fb;--mu:#bccade;--hd:#9cc2f2;--btn:#3A6CB0;--gr:#1a7a40;--ln:#2a3b57;--rw:#1a2840;--in:#0f1a2c}
+*{box-sizing:border-box}:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+body{margin:0;background:var(--bg);background-image:var(--bgi);background-attachment:fixed;min-height:100vh;color:var(--ink);font:14px/1.5 system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif}
+header{display:flex;justify-content:space-between;align-items:center;gap:10px;background:linear-gradient(120deg,#0F2747,#1F3A5F 60%,#1B6E3C);color:#fff;padding:14px 18px}
+header h1{margin:0;font-size:1.35rem}header p{margin:2px 0 0;color:#dce6f2;font-size:.85rem}
+header button{background:rgba(255,255,255,.16);color:#fff;border:1px solid rgba(255,255,255,.4);font-weight:500}
+.fb{display:inline-block;text-transform:none;letter-spacing:0;font-size:.95rem;color:var(--ink);margin:0;padding:8px 14px;border:1px solid var(--ln);border-radius:8px;cursor:pointer;font-weight:500}.fb:hover{background:var(--rw)}
+main{max-width:1200px;margin:0 auto;padding:10px 12px 70px}
+.top{display:flex;gap:10px;align-items:end;justify-content:space-between;flex-wrap:wrap;margin:6px 0 8px}
+nav{display:flex;gap:6px;background:var(--c);border:1px solid var(--ln);border-radius:12px;padding:4px}
+nav button{padding:8px 18px;background:transparent;color:var(--ink);border:0;font-weight:600}nav button.on{background:var(--btn);color:#fff}
+.by{min-width:220px;flex:0 1 280px}.note{color:var(--mu);font-size:.8rem;margin:0 0 8px}
+button{background:var(--btn);color:#fff;border:0;border-radius:8px;padding:8px 14px;font:inherit;font-weight:600;cursor:pointer;transition:filter .15s,transform .15s}
+button:hover{filter:brightness(1.12);transform:translateY(-1px)}button.alt{background:transparent;color:var(--ink);border:1px solid var(--ln);font-weight:500}
+button.alt:hover{background:var(--rw)}button.ok{background:var(--gr);color:#fff}button.no{background:var(--rd);color:#fff}button:disabled{opacity:.4;cursor:not-allowed;transform:none}
+.card{background:var(--c);border:1px solid var(--ln);border-radius:12px;padding:12px 14px;margin:0 0 10px;overflow-x:auto;animation:f .35s both}
+.card h3{margin:0 0 8px;font-size:1rem;color:var(--hd)}.card h4{margin:10px 0 4px;font-size:.9rem;color:var(--hd)}.card p{margin:.4em 0}
+#s1,#s2{display:grid;grid-template-columns:330px minmax(0,1fr);gap:12px;align-items:start}
+#s1>.card:first-child,#s2>.card:first-child{position:sticky;top:8px}
+.grid>div,.row>*{min-width:0}.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:8px}.grid.w{grid-template-columns:repeat(auto-fit,minmax(150px,1fr))}
+label{font-size:.72rem;font-weight:600;color:var(--mu);display:block;margin-bottom:2px;text-transform:uppercase;letter-spacing:.03em}
+input,select{width:100%;padding:7px 9px;border:1px solid var(--ln);border-radius:8px;background:var(--in);color:var(--ink);font:inherit}input:focus,select:focus{outline:2px solid var(--btn);border-color:transparent}
+table{width:100%;border-collapse:collapse;margin:6px 0;font-size:.85rem}th{background:#1F3A5F;color:#fff;text-align:left;padding:6px 9px;font-weight:600;white-space:nowrap}
+th:first-child{border-radius:8px 0 0 8px}th:last-child{border-radius:0 8px 8px 0}td{padding:5px 9px;border-top:1px solid var(--ln)}tr:nth-child(even) td{background:var(--rw)}td.r,th.r{text-align:right}tr.tot td{font-weight:700}
+.err{background:#fde8e6;color:#7a1511;border-left:4px solid var(--rd);padding:6px 10px;border-radius:6px;margin:8px 0;font-size:.85rem}
+.bd{display:inline-block;padding:2px 11px;border-radius:99px;font-weight:700;color:#fff;font-size:.82rem}.W{background:var(--gr)}.E{background:#a97800}.O{background:var(--rd)}
+.row{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}.row>button:first-child:last-child{flex:1}.mu{color:var(--mu);font-size:.82rem}.hide{display:none!important}
+.bar{height:7px;border-radius:4px;background:var(--btn);margin:2px 0}.bar.o{background:var(--rd)}.bar.p{background:var(--gd)}
+.stat{display:inline-block;background:var(--rw);border:1px solid var(--ln);border-radius:10px;padding:5px 12px;margin:2px 5px 2px 0;font-size:.75rem;color:var(--mu)}.stat b{display:block;font-size:1rem;color:var(--ink)}
+#pdfbox{position:fixed;left:0;right:0;margin:0 auto;bottom:14px;width:min(520px,94vw);background:var(--c);border:2px solid var(--gr);border-radius:12px;padding:10px 14px;box-shadow:0 10px 30px rgba(0,0,0,.35);z-index:20;animation:f .3s both}
+a.dl{background:var(--gr);color:#fff;padding:8px 14px;border-radius:8px;text-decoration:none;font-weight:600}a.dl.alt{background:var(--btn)}
+
+#splash{position:fixed;inset:0;z-index:50;display:flex;align-items:center;justify-content:center;background:linear-gradient(160deg,#dcecff,#efe6ff 55%,#d9f6e6);overflow:hidden;cursor:pointer;transition:opacity .6s,visibility .6s}
+#splash.hide{opacity:0;visibility:hidden;display:flex!important;pointer-events:none}
+.sp{text-align:center;position:relative;z-index:2;padding:0 16px;color:#111c2e}
+.logo{font-size:3.4rem;animation:bob 2.4s ease-in-out infinite}
+.sp h1{font-size:clamp(2rem,8vw,3.6rem);margin:.1em 0;letter-spacing:.01em}
+.ch{display:inline-block;opacity:0;transform:translateY(26px) scale(.7);animation:chIn .7s cubic-bezier(.2,.9,.3,1.4) forwards,hue 4s linear 1.2s infinite;color:#1F3A5F}
+.sp p{margin:.3em 0 1.2em;color:#2c3d57;font-size:1.05rem;opacity:0;animation:fadeUp .8s 1.3s forwards}
+.load{width:min(260px,70vw);height:6px;background:rgba(31,58,95,.15);border-radius:6px;margin:0 auto 10px;overflow:hidden}.load i{display:block;height:100%;width:0;background:linear-gradient(90deg,#2F5D9B,#1B6E3C);animation:ld 2.6s ease-out forwards}
+.sp small{color:#44546e;opacity:0;animation:fadeUp .8s 1.6s forwards}
+.cl{position:absolute;background:#fff;border-radius:99px;opacity:.7;animation:drift linear infinite}.cl:before{content:"";position:absolute;background:#fff;border-radius:50%;width:55%;height:180%;left:18%;top:-70%}
+.plane{position:absolute;top:18%;left:-80px;font-size:2rem;animation:fly 5s ease-in-out 0.4s infinite}
+.mts{position:absolute;bottom:0;left:0;width:100%;height:34%;z-index:1}
+@keyframes chIn{to{opacity:1;transform:none}}@keyframes hue{0%,100%{color:#1F3A5F}33%{color:#1d58a8}66%{color:#1B6E3C}}
+@keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}@keyframes fadeUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
+@keyframes ld{to{width:100%}}@keyframes drift{from{transform:translateX(-30vw)}to{transform:translateX(130vw)}}@keyframes fly{0%{transform:translate(0,30px) rotate(-6deg)}50%{transform:translate(55vw,-20px) rotate(4deg)}100%{transform:translate(115vw,20px) rotate(-3deg)}}
+#home{padding:18px 14px 40px}.wrap{max-width:1000px;margin:0 auto}
+.hhead{text-align:center;padding:36px 0 18px}.hhead h2{margin:0;font-size:clamp(1.6rem,5vw,2.4rem);color:var(--hd);animation:fadeUp .6s both}.hhead p{margin:6px 0 0;color:var(--mu)}
+.widgets{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:16px;margin-top:14px}
+button.wg{display:flex;flex-direction:column;align-items:flex-start;gap:6px;text-align:left;background:var(--c);color:var(--ink);border:1px solid var(--ln);border-top:5px solid var(--btn);border-radius:16px;padding:20px 18px;font-weight:400;box-shadow:0 8px 24px rgba(31,58,95,.12);animation:fadeUp .6s both}
+button.wg:nth-child(2){border-top-color:var(--gr);animation-delay:.1s}button.wg:nth-child(3){border-top-color:#a97800;animation-delay:.2s}
+button.wg:hover{transform:translateY(-4px);filter:none;box-shadow:0 14px 30px rgba(31,58,95,.2)}
+.wg .ic{font-size:2.2rem;line-height:1}.wg b{font-size:1.1rem;color:var(--ink)}.wg span.d{color:var(--mu);font-size:.9rem}.wg em{font-style:normal;font-weight:700;color:var(--hd);margin-top:6px}
+.abar{position:sticky;top:0;z-index:15;display:flex;align-items:center;gap:10px;flex-wrap:wrap;padding:8px 150px 8px 12px;background:var(--c);border-bottom:1px solid var(--ln);box-shadow:0 2px 10px rgba(0,0,0,.06)}
+.abar b{color:var(--ink);font-size:1rem}.chip{margin-left:auto;background:var(--rw);border:1px solid var(--ln);border-radius:99px;padding:5px 12px;font-size:.85rem;cursor:pointer;color:var(--ink)}
+#th{position:fixed;top:8px;right:10px;z-index:60;background:var(--c);color:var(--ink);border:1px solid var(--ln);padding:6px 11px;font-size:.8rem;font-weight:600;box-shadow:0 2px 8px rgba(0,0,0,.15)}
+.modal{position:fixed;inset:0;z-index:40;background:rgba(10,20,40,.55);display:flex;align-items:center;justify-content:center;padding:14px}
+.mbox{background:var(--c);color:var(--ink);border-radius:16px;padding:20px;width:min(420px,100%);box-shadow:0 20px 50px rgba(0,0,0,.4);animation:fadeUp .3s both}.mbox h3{margin:0 0 4px;color:var(--hd)}.mbox input{margin:10px 0 4px;font-size:1rem;padding:11px 12px}
+@media(max-width:700px){.abar{padding-right:12px;padding-top:50px}#th{top:8px}#pdfbox a.dl,#pdfbox button{min-height:44px;display:inline-flex;align-items:center;justify-content:center;font-size:.95rem}}
+#auth{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:18px}
+.abox{background:var(--c);border:1px solid var(--ln);border-radius:18px;padding:22px 20px;width:min(430px,100%);box-shadow:0 20px 50px rgba(0,0,0,.18);animation:fadeUp .4s both}
+.abox .lg{font-size:2.2rem;text-align:center}.abox h2{margin:2px 0 2px;text-align:center;color:var(--hd);font-size:1.4rem}.abox>p.mu{text-align:center;margin:0 0 12px}
+.abox nav{margin-bottom:10px}.abox nav button{flex:1}.abox label{margin-top:10px}.abox input{font-size:1rem;padding:10px 12px}
+.abox .ck{display:flex;gap:8px;align-items:flex-start;margin-top:12px;font-size:.8rem;color:var(--mu);text-transform:none;letter-spacing:0;font-weight:500}.abox .ck input{width:auto;margin-top:3px}
+.abox .big{width:100%;margin-top:14px;padding:11px;font-size:1rem}.lock{margin-top:12px;font-size:.76rem;color:var(--mu);text-align:center}
+.who{display:flex;gap:8px;justify-content:center;align-items:center;flex-wrap:wrap;margin-top:10px}.who span{background:var(--c);border:1px solid var(--ln);border-radius:99px;padding:5px 12px;font-size:.85rem}
+@keyframes f{from{opacity:0;transform:translateY(8px)}to{opacity:1}}
+@media(max-width:900px){#s1,#s2{grid-template-columns:minmax(0,1fr)}#s1>.card:first-child,#s2>.card:first-child{position:static}.by{flex:1 1 100%}nav{width:100%}nav button{flex:1}}
+@media(prefers-reduced-motion:reduce){*{animation:none!important}}
+</style></head><body>
+<button id="th" onclick="theme()" title="Switch light / dark theme">🌙 Dark</button>
+<div id="splash" onclick="goHome()"><span class="cl" style="top:12%;width:150px;height:34px;animation-duration:26s"></span><span class="cl" style="top:30%;width:110px;height:26px;animation-duration:34s;animation-delay:-14s"></span><span class="cl" style="top:52%;width:180px;height:38px;animation-duration:42s;animation-delay:-25s"></span><span class="plane">✈️</span>
+<svg class="mts" viewBox="0 0 1200 300" preserveAspectRatio="none" aria-hidden="true"><polygon points="0,300 0,200 160,90 260,170 380,60 520,190 640,110 780,200 920,80 1060,180 1200,120 1200,300" fill="#9db8dc" opacity=".55"/><polygon points="0,300 0,240 200,150 340,230 520,140 700,240 880,160 1040,235 1200,170 1200,300" fill="#4f7cac" opacity=".7"/><polygon points="0,300 0,270 240,220 480,270 760,215 1000,268 1200,235 1200,300" fill="#1F3A5F"/></svg>
+<div class="sp"><div class="logo">🏔️</div><h1 id="spt" aria-label="Smart Life Planner"></h1><p>Pakistan Trip Planner &nbsp;+&nbsp; Monthly Budget Manager</p><div class="load"><i></i></div><small>Tap anywhere to continue</small></div></div>
+<div id="auth" class="hide"><div class="abox"><div class="lg">🔐</div><h2>Smart Life Planner</h2><p class="mu">Sign in so your plans and budgets stay private to you.</p>
+<nav><button id="ati" class="on" onclick="aTab('in')">Sign in</button><button id="atu" onclick="aTab('up')">Create account</button></nav>
+<div id="afn" class="hide"><label>Full name (printed on PDF reports)</label><input id="afnv" maxlength="60" placeholder="e.g. Ayesha Khan" autocomplete="off"></div>
+<label>Username</label><input id="aun" maxlength="30" placeholder="e.g. ayesha.k" autocomplete="username" autocapitalize="none" spellcheck="false">
+<label>Password</label><input id="apw" type="password" maxlength="100" placeholder="At least 6 characters" autocomplete="current-password" onkeydown="if(event.key=='Enter')aGo()">
+<div id="apc" class="hide"><label>Confirm password</label><input id="apcv" type="password" maxlength="100" autocomplete="new-password" onkeydown="if(event.key=='Enter')aGo()"></div>
+<label id="aleg" class="ck hide"><input type="checkbox" id="alegc"><span>Move the data already saved in this browser (from before accounts existed) into this account. Tick only if it is yours.</span></label>
+<div id="aer"></div><button id="abtn" class="ok big" onclick="aGo()">Sign in →</button>
+<div class="lock">🔒 Your data is encrypted with your password on this device. Other people using this browser cannot open it. <b>If you forget your password, your data cannot be recovered.</b></div></div></div>
+<div id="home" class="hide"><div class="wrap"><div class="hhead"><h2>Smart Life Planner</h2><p>Choose what you would like to open</p><div class="who" id="hwho"></div></div>
+<div class="widgets">
+<button class="wg" onclick="pick('trip')"><span class="ic">🏔️</span><b>Pakistan Trip Planner</b><span class="d">Cost a trip, see if it fits your budget, get calculated alternatives and a day-wise itinerary.</span><em>Open →</em></button>
+<button class="wg" onclick="pick('budget')"><span class="ic">💰</span><b>Monthly Budget Manager</b><span class="d">Plan categories, record expenses, track savings and overspending for the month.</span><em>Open →</em></button>
+<button class="wg" onclick="pick('records')"><span class="ic">📁</span><b>Past Records</b><span class="d">Reopen saved trips and budgets, and download earlier PDF reports.</span><em>Open →</em></button>
+</div><p class="note" style="text-align:center;margin-top:18px">Costs are <b>estimates, not guaranteed market prices</b>. Everything stays in your own browser, encrypted, and is visible only to your account.</p></div></div>
+<div id="nm" class="modal hide"><div class="mbox"><h3 id="nmt">Enter your name</h3><p class="mu" style="margin:0">Your name is printed as “Prepared by” on the PDF report.</p><input id="nmi" maxlength="60" placeholder="e.g. Ayesha Khan" autocomplete="off" onkeydown="if(event.key=='Enter')nmGo()"><div id="nme"></div><div class="row"><button class="alt" onclick="nmClose()">Cancel</button><button class="ok" onclick="nmGo()">Continue →</button></div></div></div>
+<div id="app" class="hide"><div class="abar"><button class="alt" onclick="goHome()">← Home</button><b id="atitle"></b><span class="chip" onclick="pick(cur)" title="Change name">👤 <span id="aname"></span> ✎</span><button class="alt" onclick="logout()">Log out</button></div>
+<main>
+<section id="s1">
+<div class="card"><h3>1. Plan a trip</h3><div class="grid">
+<div><label>Available budget (PKR)</label><input id="bu" value="150000"></div>
+<div><label>Travellers (1–50)</label><input id="tv" value="4"></div>
+<div><label>Departure city</label><select id="ci"></select></div>
+<div><label>Destination type</label><select id="dt"><option>Any</option><option>Mountains</option><option>Historical Places</option><option>Lakes &amp; Nature</option></select></div>
+<div><label>Destination</label><select id="de"></select></div>
+<div><label>Days (1–30)</label><input id="dy" value="5"></div>
+<div><label>Nights (0 – days)</label><input id="ni" value="4"></div>
+<div><label>Travel category</label><select id="ca"><option>Budget</option><option selected>Standard</option><option>Premium</option></select></div>
+<div><label>Transport</label><select id="tr"><option value="">Auto</option><option>Bus</option><option>Car</option><option>Flight</option></select></div>
+<div><label>Accommodation</label><select id="ac"><option value="">Auto</option><option>Guest House</option><option>Hotel</option><option>Resort</option></select></div>
+</div><div class="row"><button onclick="propose()">Calculate / propose plan</button><button class="alt" onclick="suggest()">Suggest destinations</button><button class="alt" onclick="resetT()">Clear saved plan</button></div><div id="e1"></div></div>
+<div id="out1"></div>
+</section>
+
+<section id="s2" class="hide">
+<div class="card"><h3>1. Create monthly budget</h3><div class="grid" style="grid-template-columns:1fr">
+<div><label>Month</label><input id="bm" type="month" value="2026-11"></div>
+<div><label>Total available (PKR)</label><input id="bt" value="120000"></div>
+<div><label>Budget type</label><select id="bty"><option>Home &amp; Kitchen</option><option>Personal Finance</option></select></div>
+</div><div class="row"><button onclick="mkBud()">Create budget</button><button class="alt" onclick="resetB()">Delete budget</button></div><div id="e2"></div></div>
+<div id="out2"></div>
+</section>
+<section id="s3" class="hide"><div id="out3"></div></section>
+</main></div>
+<script>
+const D={"settings":{"emergency_percentage":10,"local_travel_factor":0.15,"departure_city_factors":{"Islamabad":1.0,"Rawalpindi":1.0,"Peshawar":1.1,"Lahore":1.25,"Faisalabad":1.35,"Multan":1.6,"Quetta":2.0,"Karachi":2.2},"transport_multipliers":{"Bus":0.6,"Car":1.0,"Flight":2.4},"accommodation_multipliers":{"Guest House":0.5,"Hotel":1.0,"Resort":1.9},"category_multipliers":{"Budget":0.7,"Standard":1.0,"Premium":1.6},"category_defaults":{"Budget":{"transport":"Bus","accommodation":"Guest House"},"Standard":{"transport":"Car","accommodation":"Hotel"},"Premium":{"transport":"Car","accommodation":"Resort"}}},"destinations":[{"name":"Murree","region":"Punjab","category":"Mountains","transport_cost_pp":2500,"accommodation_per_room_night":9000,"food_pp_day":2500,"activities_pp_day":800,"misc_pp_day":500,"room_capacity":4,"travel_categories":["Budget","Standard","Premium"],"transport_modes":["Bus","Car"],"accommodation_types":["Guest House","Hotel","Resort"],"highlights":["Mall Road","Pindi Point","Patriata (New Murree)","Kashmir Point"],"activities":["Chairlift ride","Cable car","Horse riding"]},{"name":"Nathiagali","region":"Khyber Pakhtunkhwa","category":"Mountains","transport_cost_pp":3500,"accommodation_per_room_night":9500,"food_pp_day":2500,"activities_pp_day":800,"misc_pp_day":600,"room_capacity":3,"travel_categories":["Standard","Premium"],"transport_modes":["Bus","Car"],"accommodation_types":["Guest House","Hotel","Resort"],"highlights":["Mukeshpuri Top","Miranjani Trek viewpoint","Dunga Gali Pipeline Track"],"activities":["Forest hike","Nature photography","Bonfire evening"]},{"name":"Swat","region":"Khyber Pakhtunkhwa","category":"Lakes & Nature","transport_cost_pp":9000,"accommodation_per_room_night":10000,"food_pp_day":2800,"activities_pp_day":1500,"misc_pp_day":800,"room_capacity":3,"travel_categories":["Budget","Standard","Premium"],"transport_modes":["Bus","Car"],"accommodation_types":["Guest House","Hotel","Resort"],"highlights":["Mingora Buddhist sites","Fizagat Park","Malam Jabba"],"activities":["River rafting","Jeep safari","Chairlift at Malam Jabba"]},{"name":"Kalam","region":"Khyber Pakhtunkhwa","category":"Lakes & Nature","transport_cost_pp":11000,"accommodation_per_room_night":11000,"food_pp_day":2800,"activities_pp_day":1800,"misc_pp_day":900,"room_capacity":3,"travel_categories":["Budget","Standard","Premium"],"transport_modes":["Bus","Car"],"accommodation_types":["Guest House","Hotel","Resort"],"highlights":["Mahodand Lake","Ushu Forest","Spin Khwar"],"activities":["Jeep safari","Boating","Forest trek"]},{"name":"Hunza","region":"Gilgit-Baltistan","category":"Mountains","transport_cost_pp":18000,"accommodation_per_room_night":12000,"food_pp_day":3000,"activities_pp_day":2500,"misc_pp_day":1000,"room_capacity":3,"travel_categories":["Budget","Standard","Premium"],"transport_modes":["Bus","Car"],"accommodation_types":["Guest House","Hotel","Resort"],"highlights":["Baltit Fort","Attabad Lake","Eagle's Nest viewpoint","Passu Cones"],"activities":["Boating on Attabad Lake","Cultural walk","Sunrise at Eagle's Nest"]},{"name":"Skardu","region":"Gilgit-Baltistan","category":"Mountains","transport_cost_pp":22000,"accommodation_per_room_night":13000,"food_pp_day":3200,"activities_pp_day":3000,"misc_pp_day":1200,"room_capacity":3,"travel_categories":["Budget","Standard","Premium"],"transport_modes":["Bus","Car","Flight"],"accommodation_types":["Guest House","Hotel","Resort"],"highlights":["Shangrila Resort Lake","Upper Kachura Lake","Deosai Plains","Skardu Fort (Kharpocho)"],"activities":["Jeep safari at Deosai","Boating","Cold-desert sand dunes"]},{"name":"Naran","region":"Khyber Pakhtunkhwa","category":"Lakes & Nature","transport_cost_pp":10000,"accommodation_per_room_night":10500,"food_pp_day":2800,"activities_pp_day":2000,"misc_pp_day":900,"room_capacity":4,"travel_categories":["Budget","Standard","Premium"],"transport_modes":["Bus","Car"],"accommodation_types":["Guest House","Hotel","Resort"],"highlights":["Lake Saif-ul-Malook","Lalazar","Babusar Top viewpoint"],"activities":["Jeep to the lake","Pony ride","Boating"]},{"name":"Lahore","region":"Punjab","category":"Historical Places","transport_cost_pp":9000,"accommodation_per_room_night":9000,"food_pp_day":2800,"activities_pp_day":1200,"misc_pp_day":800,"room_capacity":4,"travel_categories":["Budget","Standard","Premium"],"transport_modes":["Bus","Car","Flight"],"accommodation_types":["Guest House","Hotel","Resort"],"highlights":["Badshahi Mosque","Lahore Fort","Walled City & Delhi Gate","Wagah Border ceremony"],"activities":["Heritage walk","Food street tour","Shopping at Anarkali"]},{"name":"Islamabad","region":"Islamabad Capital Territory","category":"Lakes & Nature","transport_cost_pp":2000,"accommodation_per_room_night":10000,"food_pp_day":3000,"activities_pp_day":1000,"misc_pp_day":800,"room_capacity":3,"travel_categories":["Budget","Standard","Premium"],"transport_modes":["Bus","Car","Flight"],"accommodation_types":["Guest House","Hotel","Resort"],"highlights":["Faisal Mosque","Daman-e-Koh","Pakistan Monument","Rawal Lake"],"activities":["Margalla Hills hike","Boating at Rawal Lake","Lok Virsa museum visit"]},{"name":"Taxila","region":"Punjab","category":"Historical Places","transport_cost_pp":3000,"accommodation_per_room_night":7000,"food_pp_day":2200,"activities_pp_day":900,"misc_pp_day":500,"room_capacity":4,"travel_categories":["Budget","Standard","Premium"],"transport_modes":["Bus","Car"],"accommodation_types":["Guest House","Hotel"],"highlights":["Taxila Museum","Dharmarajika Stupa","Jaulian Monastery","Bhir Mound"],"activities":["Guided heritage tour","Museum visit","Photography walk"]}]},S=D.settings,DM={};D.destinations.forEach(d=>DM[d.name]=d);
+const CITIES=Object.keys(S.departure_city_factors),$=i=>document.getElementById(i);
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const fmt=n=>(n<0?'-':'')+'PKR '+(Math.abs(n)%1?Math.abs(n).toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2}):Math.round(Math.abs(n)).toLocaleString('en-US'));
+const R=x=>Math.floor(x+0.5),pl=(n,w)=>n+' '+w+(n==1?'':'s');
+/* ---------- accounts: every user gets a separate, password-encrypted store ---------- */
+const PK=['slp_by','slp_trip','slp_bud','slp_hist'];
+let UID=null,UKEY=null,UD=null,saveQ=Promise.resolve(),quotaWarned=false;
+const rawGet=k=>{try{return localStorage.getItem(k)}catch(e){return null}};
+const rawSet=(k,v)=>{try{localStorage.setItem(k,v);return true}catch(e){return false}};
+const store=(k,v)=>{
+ if(PK.includes(k)){if(!UD)return;v===null?delete UD[k]:UD[k]=v;persist();return}
+ try{v===undefined?JSON.parse(localStorage.getItem(k)):v===null?localStorage.removeItem(k):localStorage.setItem(k,JSON.stringify(v))}catch(e){}};
+function load(k){if(PK.includes(k))return UD&&UD[k]!==undefined?UD[k]:null;try{return JSON.parse(localStorage.getItem(k))}catch(e){return null}}
+const te=new TextEncoder(),td=new TextDecoder();
+const u8b=a=>{let t='';for(let i=0;i<a.length;i+=8192)t+=String.fromCharCode.apply(null,a.subarray(i,i+8192));return btoa(t)};
+const b8u=t=>Uint8Array.from(atob(t),c=>c.charCodeAt(0));
+async function dkey(pw,salt){const m=await crypto.subtle.importKey('raw',te.encode(pw),'PBKDF2',false,['deriveKey']);return crypto.subtle.deriveKey({name:'PBKDF2',salt,iterations:250000,hash:'SHA-256'},m,{name:'AES-GCM',length:256},false,['encrypt','decrypt'])}
+async function enc(key,txt){const iv=crypto.getRandomValues(new Uint8Array(12)),ct=new Uint8Array(await crypto.subtle.encrypt({name:'AES-GCM',iv},key,te.encode(txt)));return JSON.stringify({v:1,iv:u8b(iv),ct:u8b(ct)})}
+async function dec(key,blob){const o=JSON.parse(blob);return JSON.parse(td.decode(await crypto.subtle.decrypt({name:'AES-GCM',iv:b8u(o.iv)},key,b8u(o.ct))))}
+function persist(){if(!UKEY)return;const key=UKEY,uid=UID,snap=JSON.stringify(UD);
+ saveQ=saveQ.then(async()=>{const blob=await enc(key,snap);if(!rawSet('slp_u_'+uid,blob)&&!quotaWarned){quotaWarned=true;alert('Browser storage is full, so your latest change could not be saved. Delete old PDF reports from Past Records and try again.')}}).catch(()=>{})}
+const users=()=>{try{return JSON.parse(rawGet('slp_users'))||{}}catch(e){return{}}};
+const hasLegacy=()=>PK.some(k=>rawGet(k)!==null);
+$('ci').innerHTML=CITIES.map(c=>`<option>${c}</option>`).join('');
+$('de').innerHTML='<option>Any</option>'+D.destinations.map(d=>`<option>${d.name}</option>`).join('');$('de').value='Hunza';
+function tab(n){$('pdfbox')?.remove();[1,2,3].forEach(i=>$('s'+i).classList.toggle('hide',n!=i));if(n==3)drawH()}
+function show(id){['splash','home','app','auth'].forEach(x=>$(x).classList.toggle('hide',x!=id))}
+function goHome(){clearTimeout(splashT);$('pdfbox')?.remove();if(!UID){aTab(aMode);show('auth');window.scrollTo(0,0);return}show('home');window.scrollTo(0,0)}
+function pick(m){cur=m;if(m=='records'||!NAME&&0){openMod(m);return}$('nmi').value=NAME;$('nme').innerHTML='';$('nmt').textContent=m=='budget'?'💰 Monthly Budget Manager':'🏔️ Pakistan Trip Planner';$('nm').classList.remove('hide');setTimeout(()=>$('nmi').focus(),60)}
+function go(m){cur=m;if(m!='records'&&!NAME)pick(m);else openMod(m)}
+function nmClose(){$('nm').classList.add('hide')}
+function nmGo(){const v=$('nmi').value.trim().replace(/\s+/g,' ');try{if(!v)throw Error('Please enter your name to continue.');if(!/^[\p{L}][\p{L}\p{M} .'’-]{1,59}$/u.test(v))throw Error("Use 2–60 letters (spaces . - ' are allowed).");NAME=v;store('slp_by',v);nmClose();openMod(cur)}catch(e){showErr('nme',e.message)}}
+function openMod(m){show('app');tab(m=='trip'?1:m=='budget'?2:3);$('atitle').textContent={trip:'🏔️ Pakistan Trip Planner',budget:'💰 Monthly Budget Manager',records:'📁 Past Records'}[m];$('aname').textContent=NAME||'add name';window.scrollTo(0,0)}
+function theme(){store('slp_theme',(load('slp_theme')||'light')=='light'?'dark':'light');applyTheme()}
+function applyTheme(){const m=load('slp_theme')||'light';document.documentElement.setAttribute('data-theme',m);$('th').textContent=m=='light'?'🌙 Dark':'☀️ Light'}
+/* ---------- validation (mirrors utils/validators.py) ---------- */
+function pint(v,l,min,max){v=String(v).trim().replace(/^pkr\s*/i,'').replace(/,/g,'');if(!v)throw Error(l+' cannot be empty.');if(!/^[+-]?\d+$/.test(v))throw Error(`${l} must be a whole number (got '${v}').`);const n=+v;if(n<min)throw Error(`${l} must be at least ${min} (got ${n}).`);if(n>max)throw Error(`${l} must be at most ${max.toLocaleString('en-US')}.`);return n}
+function pamt(v,l,zero){v=String(v).trim().replace(/^pkr\s*/i,'').replace(/,/g,'');if(!v)throw Error(l+' cannot be empty.');if(!/^[+-]?\d+(\.\d+)?$/.test(v))throw Error(`${l} must be a number (got '${v}').`);const n=+v;if(n<0)throw Error(l+' cannot be negative.');if(n==0&&!zero)throw Error(l+' must be greater than zero.');if(n>1e9)throw Error(l+' is too large.');return Math.round(n*100)/100}
+function readTrip(){const days=pint($('dy').value,'Number of days',1,30);return{budget:pint($('bu').value,'Budget',1,1e9),travellers:pint($('tv').value,'Number of travellers',1,50),dest:$('de').value,city:$('ci').value,days,nights:(()=>{const n=pint($('ni').value,'Number of nights',0,30);if(n>days)throw Error(`Nights (${n}) cannot be greater than days (${days}).`);return n})(),category:$('ca').value,transport:$('tr').value||null,accommodation:$('ac').value||null,dtype:$('dt').value}}
+/* ---------- cost calculator (mirrors TripCostCalculator) ---------- */
+function calc(d,t){if(!d.travel_categories.includes(t.category))throw Error(`${d.name} does not offer the ${t.category} travel category.`);const df=S.category_defaults[t.category];
+ if(t.transport&&!d.transport_modes.includes(t.transport))throw Error(`${d.name} does not offer transport '${t.transport}'.`);
+ if(t.accommodation&&!d.accommodation_types.includes(t.accommodation))throw Error(`${d.name} does not offer accommodation '${t.accommodation}'.`);
+ const tr=t.transport||(d.transport_modes.includes(df.transport)?df.transport:d.transport_modes[0]),ac=t.accommodation||(d.accommodation_types.includes(df.accommodation)?df.accommodation:d.accommodation_types[0]);
+ const tw=['Islamabad','Rawalpindi'],local=t.city===d.name||(tw.includes(t.city)&&tw.includes(d.name));
+ const f=local?S.local_travel_factor:(S.departure_city_factors[t.city]??1.5),cm=S.category_multipliers[t.category],rooms=Math.ceil(t.travellers/d.room_capacity);
+ const transportation=R(d.transport_cost_pp*S.transport_multipliers[tr]*f)*t.travellers,accommodation=R(d.accommodation_per_room_night*S.accommodation_multipliers[ac])*rooms*t.nights;
+ const food=R(d.food_pp_day*cm)*t.travellers*t.days,activities=R(d.activities_pp_day*cm)*t.travellers*t.days,misc=R(d.misc_pp_day*cm)*t.travellers*t.days;
+ const sub=transportation+accommodation+food+activities+misc,em=Math.ceil(+(sub*S.emergency_percentage/100).toFixed(6)),total=sub+em;
+ return{tr,ac,rooms,transportation,accommodation,food,activities,misc,sub,em,total,pp:Math.round(total/t.travellers*100)/100}}
+const cost=t=>{try{return calc(DM[t.dest],t)}catch(e){return null}};
+const status=(c,b)=>c.total<b?['Within Budget','W']:c.total==b?['Exactly Within Budget','E']:['Over Budget','O'];
+/* ---------- optimiser (mirrors TripOptimizer) ---------- */
+function score(o,oc,n,nc){const ds=n.dest==o.dest?1:DM[n.dest].category==DM[o.dest].category?.6:.3,same=(nc.tr==oc.tr)+(nc.ac==oc.ac);
+ const v=[.25*ds,.25*Math.min(1,n.travellers/o.travellers),.2*Math.min(1,n.days/o.days),.15*Math.max(0,Math.min(1,(o.budget-nc.total)/o.budget)),.15*(same/2)];
+ let t=0,c=0;for(const x of v){const u=t+x;c+=Math.abs(t)>=Math.abs(x)?(t-u)+x:(x-u)+t;t=u}return +(t+c).toFixed(4)}
+function analyse(t){const c=cost(t),r={c,short:Math.max(0,c.total-t.budget),alts:[],notes:[]};let mt=0;for(let n=50;n>=1;n--){const k=cost({...t,travellers:n});if(k&&k.total<=t.budget){mt=n;break}}r.mt=mt;if(c.total<=t.budget)return r;
+ const add=(label,n)=>{const k=cost(n);if(k&&k.total<=t.budget)r.alts.push({label,t:n,c:k,s:score(t,c,n,k)});return k};
+ if(mt>=1&&mt<t.travellers)add('Reduce travellers to '+mt,{...t,travellers:mt});
+ let dur=0;for(let d=t.days;d>=1;d--)for(let n=Math.min(t.nights,d);n>=0;n--){const k=cost({...t,days:d,nights:n});if(k&&k.total<=t.budget){if(!(d==t.days&&n==t.nights)){add(`Shorten trip to ${pl(d,'day')} / ${pl(n,'night')}`,{...t,days:d,nights:n});}dur++;break}}
+ let dc=0;for(const nm in DM){if(nm==t.dest||(t.dtype!='Any'&&DM[nm].category!=t.dtype))continue;const k=add('Change destination to '+nm,{...t,dest:nm,transport:t.transport,accommodation:t.accommodation});if(k&&k.total<=t.budget)dc++}
+ const d=DM[t.dest];d.transport_modes.forEach(a=>d.accommodation_types.forEach(b=>{if(a==c.tr&&b==c.ac)return;add(`Use ${a} + ${b}`,{...t,transport:a,accommodation:b})}));
+ r.alts.sort((a,b)=>b.s-a.s||a.c.total-b.c.total||(a.label<b.label?-1:1));
+ if(!mt)r.notes.push('The budget cannot cover even one traveller for this trip.');if(!dur)r.notes.push('Even the shortest practical trip (1 day) is unaffordable with these settings.');
+ if(!dc)r.notes.push('No other destination is affordable within the budget with your constraints.');if(!r.alts.length)r.notes.push(`No alternative fits the budget; the minimum required budget is ${fmt(c.total)}.`);return r}
+/* ---------- itinerary (mirrors build_itinerary) ---------- */
+function itinerary(t,c){const d=DM[t.dest],o=[];for(let i=1;i<=t.days;i++){const it=[],h=d.highlights[(i-1)%d.highlights.length],a=d.activities[(i-1)%d.activities.length];
+ const title=t.days==1?'Day trip to '+d.name:i==1?'Departure and arrival':i==t.days?'Final sightseeing and return':'Sightseeing and activities';
+ if(i==1){it.push(`Depart from ${t.city} by ${c.tr}.`,`Arrive in ${d.name} (${d.region}).`);if(t.nights>=1)it.push(`Check in to ${c.ac} (${pl(c.rooms,'room')}).`)}
+ it.push(`Sightseeing: ${h}.`,`Activity: ${a}.`);
+ if(i==t.days&&i<=t.nights)it.push(`Overnight stay at ${c.ac}; check out and return to ${t.city} by ${c.tr} next morning.`);else if(i==t.days)it.push(`Return journey to ${t.city} by ${c.tr}.`);else if(i<=t.nights)it.push(`Overnight stay at ${c.ac}.`);else it.push('Day-use only (no overnight accommodation is included on this day).');
+ o.push({i,title,it})}return o}
+/* ---------- past records (history), kept in this browser ---------- */
+let H=load('slp_hist')||{};['trips','budgets','reports'].forEach(k=>{if(!Array.isArray(H[k]))H[k]=[]});
+const hs=()=>store('slp_hist',H),now=()=>new Date().toISOString().slice(0,19).replace('T',' ');
+function hb(){if(!B)return;const key=B.month+'|'+B.type,i=H.budgets.findIndex(x=>x.key==key),r={key,saved:now(),B:JSON.parse(JSON.stringify(B))};i<0?H.budgets.unshift(r):H.budgets[i]=r;hs()}
+const b64blob=b=>new Blob([Uint8Array.from(atob(b),c=>c.charCodeAt(0))],{type:'application/pdf'});
+const tot=b=>({p:Object.values(b.cats).reduce((x,y)=>x+y,0),a:b.exp.reduce((x,e)=>x+e.amt,0)});
+const repDl=i=>showPdf(b64blob(H.reports[i].b64),H.reports[i].id+'.pdf',true),repDel=i=>{H.reports.splice(i,1);hs();drawH()};
+const tripOpen=i=>{confirmed={t:H.trips[i].t,c:H.trips[i].c};pending=null;store('slp_trip',confirmed);setForm(confirmed.t);go('trip');draw()},tripDel=i=>{H.trips.splice(i,1);hs();drawH()};
+const budOpen=i=>{B=JSON.parse(JSON.stringify(H.budgets[i].B));store('slp_bud',B);go('budget');drawB()},budDel=i=>{H.budgets.splice(i,1);hs();drawH()};
+function expH(){showPdf(new Blob([JSON.stringify({app:'Smart Life Planner',exported:now(),trips:H.trips,budgets:H.budgets,reports:H.reports},null,1)],{type:'application/json'}),'smart-life-planner-records.json',true)}
+function impH(inp){const f=inp.files[0];if(!f)return;const r=new FileReader();r.onload=()=>{try{const d=JSON.parse(r.result);if(!d||typeof d!='object')throw Error('Not a records file.');let n=0;
+ (d.trips||[]).forEach(x=>{if(x&&x.id&&x.t&&x.c&&typeof x.c.total=='number'&&!H.trips.some(y=>y.id==x.id)){H.trips.push(x);n++}});
+ (d.budgets||[]).forEach(x=>{if(x&&x.key&&x.B&&x.B.cats&&Array.isArray(x.B.exp)&&!H.budgets.some(y=>y.key==x.key)){H.budgets.push(x);n++}});
+ (d.reports||[]).forEach(x=>{if(x&&x.id&&x.b64&&!H.reports.some(y=>y.id==x.id)){H.reports.push(x);n++}});hs();drawH();showErr('e3','');$('e3').innerHTML=`<p class="mu">Imported ${n} new record(s).</p>`}catch(e){showErr('e3','Import failed: '+e.message)}};r.readAsText(f);inp.value=''}
+function clrH(){if(!window._c){window._c=1;$('clr').textContent='Click again to confirm';setTimeout(()=>{window._c=0;$('clr')&&($('clr').textContent='Delete all')},4000);return}window._c=0;H={trips:[],budgets:[],reports:[]};hs();drawH()}
+function drawH(){const T=(h,rows,empty)=>rows.length?`<table><tr>${h.map(x=>`<th>${x}</th>`).join('')}</tr>${rows.join('')}</table>`:`<p class="mu">${empty}</p>`;
+ const rr=H.reports.map((r,i)=>`<tr><td>${esc(r.id)}</td><td>${esc(r.type)}</td><td>${esc(r.title)}</td><td>${r.created}</td><td><button onclick="repDl(${i})">⬇ PDF</button> <button class="alt" onclick="repDel(${i})">🗑</button></td></tr>`),
+ tr=H.trips.map((r,i)=>{const[st,cl]=status(r.c,r.t.budget);return`<tr><td>${esc(r.id)}</td><td>${esc(r.t.dest)}</td><td>${r.t.travellers} pax · ${r.t.days}d/${r.t.nights}n</td><td class="r">${fmt(r.c.total)}</td><td><span class="bd ${cl}">${st}</span></td><td>${r.saved}</td><td><button onclick="tripOpen(${i})">Open</button> <button class="alt" onclick="tripDel(${i})">🗑</button></td></tr>`}),
+ br=H.budgets.map((r,i)=>{const s=tot(r.B.cats?r.B:{cats:{},exp:[]});return`<tr><td>${esc(r.B.month)}</td><td>${esc(r.B.type)}</td><td class="r">${fmt(r.B.total)}</td><td class="r">${fmt(s.p)}</td><td class="r">${fmt(s.a)}</td><td class="r">${fmt(r.B.total-s.a)}</td><td>${r.B.confirmed?'✅':'—'}</td><td><button onclick="budOpen(${i})">Open</button> <button class="alt" onclick="budDel(${i})">🗑</button></td></tr>`});
+ $('out3').innerHTML=`<div class="card"><h3>📁 Past records</h3><span class="stat">Reports<b>${H.reports.length}</b></span><span class="stat">Saved trips<b>${H.trips.length}</b></span><span class="stat">Saved budgets<b>${H.budgets.length}</b></span><p class="mu">Everything you confirm or download is kept in this browser. Export it as a file to keep a copy or move it to another device.</p>
+ <div class="row"><button onclick="expH()">⬇ Export all records (JSON)</button><label class="fb">⬆ Import records<input type="file" accept=".json,application/json" onchange="impH(this)" hidden></label><button class="no" id="clr" onclick="clrH()">Delete all</button></div><div id="e3"></div></div>
+ <div class="card"><h3>Generated PDF reports</h3>${T(['Report ID','Type','Title','Created',''],rr,'No reports generated yet.')}</div>
+ <div class="card"><h3>Confirmed trip plans</h3>${T(['Plan ID','Destination','Trip','Total','Status','Saved',''],tr,'No confirmed trips yet.')}</div>
+ <div class="card"><h3>Monthly budgets</h3>${T(['Month','Type','Available','Planned','Actual','Remaining','Confirmed',''],br,'No budgets yet.')}</div>`}
+/* ---------- trip UI ---------- */
+let pending=null,confirmed=load('slp_trip');
+const LBL={budget:'Budget',travellers:'Travellers',dest:'Destination',city:'Departure city',days:'Days',nights:'Nights',category:'Category',transport:'Transport',accommodation:'Accommodation'};
+function setForm(t){$('bu').value=t.budget;$('tv').value=t.travellers;$('ci').value=t.city;$('dt').value=t.dtype;$('de').value=t.dest;$('dy').value=t.days;$('ni').value=t.nights;$('ca').value=t.category;$('tr').value=t.transport||'';$('ac').value=t.accommodation||''}
+function showErr(id,m){$(id).innerHTML=m?`<div class="err">⚠ ${esc(m)}</div>`:''}
+function suggest(){try{showErr('e1');const t=readTrip(),rows=[];for(const nm in DM){if(t.dtype!='Any'&&DM[nm].category!=t.dtype)continue;const k=cost({...t,dest:nm});if(k)rows.push([nm,DM[nm].category,k.total])}rows.sort((a,b)=>a[2]-b[2]);
+ $('out1').innerHTML=`<div class="card"><h3>Destination comparison (same constraints)</h3><table><tr><th>Destination</th><th>Category</th><th class="r">Total</th><th>Status</th><th></th></tr>${rows.map(r=>`<tr><td>${r[0]}</td><td>${r[1]}</td><td class="r">${fmt(r[2])}</td><td>${r[2]<=t.budget?'✅ affordable':'❌ over budget'}</td><td><button class="alt" onclick="$('de').value='${r[0]}';propose()">Use</button></td></tr>`).join('')||'<tr><td colspan=5>No destination matches.</td></tr>'}</table></div>`}catch(e){showErr('e1',e.message)}}
+function propose(){try{showErr('e1');const t=readTrip();if(t.dest=='Any')throw Error("Choose a destination or press 'Suggest destinations'.");const c=calc(DM[t.dest],t);pending={t,c};draw()}catch(e){showErr('e1',e.message)}}
+function confirmT(){confirmed=pending;pending=null;store('slp_trip',confirmed);H.trips.unshift({id:rid('TRIP'),saved:now(),t:confirmed.t,c:confirmed.c});H.trips=H.trips.slice(0,50);hs();draw()}
+function cancelT(){pending=null;if(confirmed)setForm(confirmed.t);draw()}
+function resetT(){confirmed=pending=null;store('slp_trip',null);$('out1').innerHTML=''}
+function table(p){const{t,c}=p,[st,cl]=status(c,t.budget),d=t.budget-c.total;return`<p><span class="bd ${cl}">${st}</span> &nbsp;${c.total>t.budget?`Shortage <b>${fmt(-d)}</b>`:`Remaining <b>${fmt(d)}</b>`}${c.sub<=t.budget&&c.total>t.budget?' — the emergency allowance is what pushes this trip over budget':''}</p>
+<table><tr><th>Item</th><th class="r">Amount</th></tr><tr><td>Transportation (${c.tr})</td><td class="r">${fmt(c.transportation)}</td></tr><tr><td>Accommodation (${c.ac}, ${pl(c.rooms,'room')} × ${pl(t.nights,'night')})</td><td class="r">${fmt(c.accommodation)}</td></tr><tr><td>Food</td><td class="r">${fmt(c.food)}</td></tr><tr><td>Activities</td><td class="r">${fmt(c.activities)}</td></tr><tr><td>Miscellaneous</td><td class="r">${fmt(c.misc)}</td></tr><tr><td>Emergency allowance (${S.emergency_percentage}%)</td><td class="r">${fmt(c.em)}</td></tr><tr class="tot"><td>Total estimated cost</td><td class="r">${fmt(c.total)}</td></tr><tr><td>Cost per person</td><td class="r">${fmt(c.pp)}</td></tr><tr><td>Available budget</td><td class="r">${fmt(t.budget)}</td></tr></table>`}
+function itinHTML(p){return itinerary(p.t,p.c).map(d=>`<p><b>Day ${d.i}: ${d.title}</b><br>${d.it.map(x=>'• '+esc(x)).join('<br>')}</p>`).join('')}
+function draw(){let h='';
+ if(pending){h+=`<div class="card"><h3>2. Pending plan <span class="mu">(not saved yet)</span></h3><p>${pending.t.dest} · ${pl(pending.t.travellers,'traveller')} · ${pending.t.days} days / ${pending.t.nights} nights · ${pending.t.category} · from ${pending.t.city}</p>${table(pending)}`;
+  if(confirmed){const rows=[];for(const k in LBL)if(confirmed.t[k]!==pending.t[k])rows.push([LBL[k],confirmed.t[k]??'Auto',pending.t[k]??'Auto']);if(confirmed.c.total!==pending.c.total)rows.push(['Total cost',fmt(confirmed.c.total),fmt(pending.c.total)]);
+   h+=`<h4>Review changes vs confirmed plan</h4>${rows.length?`<table><tr><th>Field</th><th>Confirmed</th><th>Pending</th></tr>${rows.map(r=>`<tr><td>${r[0]}</td><td>${r[1]}</td><td>${r[2]}</td></tr>`).join('')}</table>`:'<p class="mu">No differences.</p>'}`}
+  h+=`<div class="row"><button class="ok" onclick="confirmT()">✔ Confirm &amp; save</button><button class="no" onclick="cancelT()">✖ Cancel (keep previous plan)</button></div></div>`;
+  const a=analyse(pending.t);if(a.c.total>pending.t.budget){h+=`<div class="card"><h3>3. Why it is unaffordable – and what you can do</h3><p>Shortage <b>${fmt(a.short)}</b>. <b>1. Increase budget:</b> need ${fmt(a.c.total)} (add ${fmt(a.short)}). <b>2. Reduce travellers:</b> ${a.mt?`up to ${a.mt} can travel`:'budget cannot cover even one traveller'}.</p>
+   ${a.alts.length?`<table><tr><th>#</th><th>Alternative (fully recalculated)</th><th class="r">Cost</th><th class="r">Left</th><th class="r">Score</th><th></th></tr>${a.alts.slice(0,8).map((x,i)=>`<tr><td>${i+1}</td><td>${x.label}</td><td class="r">${fmt(x.c.total)}</td><td class="r">${fmt(pending.t.budget-x.c.total)}</td><td class="r">${x.s}</td><td><button class="alt" onclick='setForm(${JSON.stringify(x.t)});propose()'>Apply</button></td></tr>`).join('')}</table>`:''}${a.notes.map(n=>`<p class="mu">ℹ ${n}</p>`).join('')}</div>`}}
+ if(confirmed){h+=`<div class="card"><h3>✅ Confirmed plan</h3><p>${confirmed.t.dest} · ${pl(confirmed.t.travellers,'traveller')} · ${confirmed.t.days} days / ${confirmed.t.nights} nights</p>${table(confirmed)}<h4>Day-wise itinerary</h4>${itinHTML(confirmed)}<div class="row"><button onclick="tripPDF()">⬇ Download PDF report</button></div></div>`}
+ else h+=`<div class="card mu">PDF download stays locked until a plan is confirmed.</div>`;
+ $('out1').innerHTML=h}
+/* ---------- real PDF generator (no libraries): Helvetica, tables, multi-page, footer on every page ---------- */
+const HW=[278,278,355,556,556,889,667,191,333,333,389,584,278,333,278,278,556,556,556,556,556,556,556,556,556,556,278,278,584,584,584,556,1015,667,667,722,722,667,611,778,722,278,500,667,556,833,722,778,667,778,722,667,611,722,667,944,667,667,611,278,278,278,469,556,333,556,556,500,556,556,278,556,556,222,222,500,222,833,556,556,556,556,333,500,278,556,500,722,500,500,500,334,260,334,584];
+const clean=s=>String(s).replace(/[·]/g,'|').replace(/[–—]/g,'-').replace(/×/g,'x').replace(/•/g,'-').replace(/[’‘]/g,"'").replace(/[^\x20-\x7e]/g,'');
+const tw=(s,z,b)=>[...s].reduce((a,c)=>a+HW[c.charCodeAt(0)-32],0)*z/1000*(b?1.06:1);
+function Doc(){const P=[[]],M=40,W=515;let y=800,ci=0;const nb=n=>{if(y-n<66){P.push([]);ci++;y=800}};
+ const T=(s,x,yy,z,b,al,col)=>{s=clean(s);if(al=='r')x-=tw(s,z,b);P[ci].push(`${col||'0 g'} BT /F${b?2:1} ${z} Tf ${x.toFixed(1)} ${yy.toFixed(1)} Td (${s.replace(/([()\\])/g,'\\$1')}) Tj ET`)};
+ const D={h(s,z=13,col='0.12 0.23 0.37 rg'){nb(z+16);y-=z+7;T(s,M,y,z,1,'l',col);y-=3},
+  text(s,z=10,b){let line='';const out=[];for(const w of clean(s).split(' ')){const t=line?line+' '+w:w;if(tw(t,z,b)>W&&line){out.push(line);line=w}else line=t}out.push(line);out.forEach(l=>{nb(z+5);y-=z+3;T(l,M,y,z,b)})},
+  table(cols,rows,o={}){rows.forEach((r,i)=>{nb(20);const hd=o.head&&i==0,tt=o.total&&i==rows.length-1;y-=17;P[ci].push(`${hd?'0.12 0.23 0.37':tt?'0.86 0.9 0.95':i%2?'0.93 0.95 0.97':'1 1 1'} rg ${M} ${y-5} ${W} 17 re f`);let x=M;
+   r.forEach((c,j)=>{let s=clean(c),k=cols[j];while(s.length>1&&tw(s,9,hd||tt)>k.w-10)s=s.slice(0,-1);T(s,k.r?x+k.w-5:x+5,y,9,hd||tt,k.r?'r':'l',hd?'1 g':'0 g');x+=k.w})});y-=8},
+  save(name,foot){const n=P.length,ob=['<< /Type /Catalog /Pages 2 0 R >>',`<< /Type /Pages /Kids [${P.map((_,i)=>`${5+2*i} 0 R`).join(' ')}] /Count ${n} >>`,'<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica /Encoding /WinAnsiEncoding >>','<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica-Bold /Encoding /WinAnsiEncoding >>'];
+   P.forEach((_,i)=>{ci=i;P[i].push('0.12 0.23 0.37 RG 40 52 m 555 52 l S');T(foot,297.5-tw(clean(foot),8)/2,38,8);T(`Page ${i+1} of ${n}`,555,38,8,0,'r');
+    ob.push('<< /Type /Page /Parent 2 0 R /MediaBox [0 0 595 842] /Resources << /Font << /F1 3 0 R /F2 4 0 R >> >> /Contents '+(6+2*i)+' 0 R >>');const c=P[i].join('\n');ob.push(`<< /Length ${c.length} >>\nstream\n${c}\nendstream`)});
+   ob.push(`<< /Title (${name}) /Author (${clean(by()).replace(/([()\\])/g,'\\$1')}) /Creator (Smart Life Planner) /Producer (Smart Life Planner) >>`);
+   let out='%PDF-1.4\n';const off=[];ob.forEach((o,i)=>{off.push(out.length);out+=`${i+1} 0 obj\n${o}\nendobj\n`});const x=out.length;
+   out+=`xref\n0 ${ob.length+1}\n0000000000 65535 f \n`+off.map(o=>String(o).padStart(10,'0')+' 00000 n \n').join('')+`trailer\n<< /Size ${ob.length+1} /Root 1 0 R /Info ${ob.length} 0 R >>\nstartxref\n${x}\n%%EOF`;
+   const blob=new Blob([Uint8Array.from(out,c=>c.charCodeAt(0))],{type:'application/pdf'});showPdf(blob,name)}};return D}
+let DL=null,PB=null;try{window.claude&&claude.use&&claude.use('downloads').then(x=>{DL=x}).catch(()=>{})}catch(e){}
+function dlPdf(){if(DL&&PB){DL.save({filename:PB.name,data:PB.blob}).catch(()=>{});return false}return true}
+let META=null;
+const MOBILE=/Android|iPhone|iPad|iPod|Mobile/i.test(navigator.userAgent)||navigator.maxTouchPoints>1;
+function showPdf(blob,name,fromRecord){PB={blob,name};
+ if(!fromRecord&&META){const m=META,fr=new FileReader();META=null;fr.onload=()=>{H.reports.unshift({id:name.replace('.pdf',''),type:m.type,title:m.title,created:now(),b64:String(fr.result).split(',')[1]});H.reports=H.reports.slice(0,30);hs()};fr.readAsDataURL(blob)}
+ const url=URL.createObjectURL(blob);let box=$('pdfbox');if(!box){box=document.createElement('div');box.id='pdfbox';document.body.appendChild(box)}
+ const f=new File([blob],name,{type:blob.type||'application/pdf'}),canShare=!!(navigator.canShare&&navigator.canShare({files:[f]}));
+ const share=canShare?`<button id="shr" class="${MOBILE?'ok':'alt'}">📲 Share / Save to Files</button>`:'';
+ box.innerHTML=`<b>✅ ${blob.type.includes('pdf')?'PDF':'File'} ready:</b> ${esc(name)} <span class="mu">(${Math.round(blob.size/1024)} KB)</span><div class="row">${MOBILE?share:''}<a class="dl" href="${url}" download="${esc(name)}" onclick="return dlPdf()">⬇ Download</a><a class="dl alt" href="${url}" target="_blank" rel="noopener" onclick="return dlPdf()">Open</a>${MOBILE?'':share}<button class="alt" onclick="this.parentNode.parentNode.remove()">✕</button></div><div class="mu">${MOBILE?'On a phone: tap “Share / Save to Files” (or “Download”), then choose Files / Downloads.':'If nothing downloads, tap “Download” once more.'}</div>`;
+ const sh=$('shr');if(sh)sh.onclick=()=>navigator.share({files:[f],title:name}).catch(()=>{});
+ if(!('download' in document.createElement('a'))){window.open(url,'_blank');return}
+ if(DL)dlPdf();else try{box.querySelector('a.dl').click()}catch(e){}}
+let NAME=load('slp_by')||'',cur=null,splashT=null;
+const by=()=>NAME||'Not provided';
+const FOOT='Developer: Laiba Shehbaz  |  Smart Life Planner';
+const today=()=>new Date().toLocaleDateString('en-GB',{day:'numeric',month:'long',year:'numeric'});
+function rid(p){const d=new Date();return p+'-'+d.toISOString().slice(0,19).replace(/[-:T]/g,'').replace(/^(\d{8})/,'$1-')+'-'+Math.random().toString(16).slice(2,8).toUpperCase()}
+const KV=[{w:170},{w:345}],AM=[{w:355},{w:160,r:1}];
+function tripPDF(){const{t,c}=confirmed,id=rid('TRIP'),d=t.budget-c.total,D=Doc(),m=pl;
+ D.h('Smart Life Planner',24);D.h('Pakistan Trip Plan',15,'0.3 0.3 0.3 rg');D.table(KV,[['Report ID',id],['Generated on',today()],['Prepared by',by()]]);
+ D.h('Trip details');D.table(KV,[['Destination',`${t.dest} (${DM[t.dest].region})`],['Departure city',t.city],['Travellers',t.travellers],['Days / nights',`${t.days} days / ${t.nights} nights`],['Travel category',t.category],['Transportation',c.tr],['Accommodation',`${c.ac} (${m(c.rooms,'room')})`]]);
+ D.h('Cost breakdown');D.table(AM,[['Item','Amount'],['Transportation',fmt(c.transportation)],['Accommodation',fmt(c.accommodation)],['Food',fmt(c.food)],['Activities',fmt(c.activities)],['Miscellaneous expenses',fmt(c.misc)],[`Emergency allowance (${S.emergency_percentage}%)`,fmt(c.em)],['Total estimated cost',fmt(c.total)]],{head:1,total:1});
+ D.table(AM,[['Cost per person',fmt(c.pp)],['Available budget',fmt(t.budget)],[d<0?'Shortage':'Remaining balance',fmt(Math.abs(d))],['Final feasibility status',status(c,t.budget)[0]]]);
+ D.h('Day-wise itinerary');itinerary(t,c).forEach(x=>{D.text(`Day ${x.i}: ${x.title}`,10,1);x.it.forEach(l=>D.text('   - '+l,9.5))});
+ D.h('Note',10);D.text('All costs are estimates, not guaranteed market prices.',8.5);META={type:'trip',title:`Trip to ${t.dest} (${pl(t.travellers,'traveller')})`};D.save(id+'.pdf',FOOT)}
+/* ---------- budget manager (mirrors models/budget.py) ---------- */
+const TYPES={'Home & Kitchen':['Grocery','Electricity','Gas','Water','Internet','Rent','Kitchen Supplies','Medical Expenses','Transportation','Emergency Savings','Other Expenses'],'Personal Finance':['Cosmetics and Personal Care','Fitness and Gym','Health and Medical','Shopping','Clothing','Food and Restaurants','Transportation','Education','Entertainment','Investments and Savings','Other Expenses']};
+let B=load('slp_bud');
+function catName(v,b){v=String(v||'').trim().replace(/\s+/g,' ');if(!v)throw Error('Category name cannot be empty.');if(v.length>40)throw Error('Category name must be at most 40 characters.');if(!/^[A-Za-z][A-Za-z0-9 &\/'-]*$/.test(v))throw Error("Category name must start with a letter and use only letters, digits, spaces, & / ' -.");return v}
+const find=n=>Object.keys(B.cats).find(c=>c.toLowerCase()==String(n).trim().toLowerCase());
+const sv=()=>{B.confirmed=false;store('slp_bud',B);hb()};
+function mkBud(){try{showErr('e2');const m=$('bm').value;if(!/^(20\d\d|2100)-(0[1-9]|1[0-2])$/.test(m))throw Error('Budget month must look like YYYY-MM.');const total=pamt($('bt').value,'Monthly budget'),ty=$('bty').value;if(H.budgets.some(x=>x.key==m+'|'+ty))throw Error(`A ${ty} budget for ${m} already exists. Open it from Past Records, or delete it first.`);const cats={};TYPES[ty].forEach(c=>cats[c]=0);B={month:m,total,type:ty,cats,exp:[],confirmed:false,n:1};store('slp_bud',B);hb();drawB()}catch(e){showErr('e2',e.message)}}
+function resetB(){if(B){H.budgets=H.budgets.filter(x=>x.key!=B.month+'|'+B.type);hs()}B=null;store('slp_bud',null);$('out2').innerHTML='';showErr('e2')}
+function act(fn){try{showErr('e2');fn();sv();drawB()}catch(e){showErr('e2',e.message);}}
+const addCat=()=>act(()=>{const n=catName($('nc').value);if(find(n))throw Error(`Category '${n}' already exists.`);B.cats[n]=pamt($('np').value||'0','Planned amount',true)});
+const setPl=(c,v)=>act(()=>{B.cats[c]=pamt(v,'Planned amount',true)});
+const rmCat=c=>act(()=>{if(B.exp.some(e=>e.cat==c))throw Error(`Cannot remove '${c}': it has recorded expenses. Delete them first.`);delete B.cats[c]});
+const addExp=()=>act(()=>{const c=find($('ec').value);if(!c)throw Error(`Category '${$('ec').value}' does not exist.`);const a=pamt($('ea').value,'Expense amount'),d=$('ed').value||B.month+'-01';if(!/^\d{4}-\d\d-\d\d$/.test(d)||isNaN(new Date(d)))throw Error(`Invalid date '${d}'. Use YYYY-MM-DD.`);if(!d.startsWith(B.month))throw Error(`Date ${d} is outside the budget month ${B.month}.`);
+ let id=$('ei').value.trim();if(id&&!/^[A-Za-z0-9_-]{1,20}$/.test(id))throw Error("Expense ID must be 1-20 characters: letters, digits, '_' or '-'.");if(!id){while(B.exp.some(e=>e.id=='E'+String(B.n).padStart(3,'0')))B.n++;id='E'+String(B.n).padStart(3,'0');B.n++}if(B.exp.some(e=>e.id==id))throw Error(`Expense ID '${id}' already exists.`);
+ const ds=$('edc').value.trim();if(ds.length>100)throw Error('Description must be at most 100 characters.');B.exp.push({id,cat:c,amt:a,desc:ds||'No description',date:d})});
+const delExp=i=>act(()=>{B.exp.splice(i,1)});
+const editExp=i=>{const v=prompt('New amount (PKR) for '+B.exp[i].id,B.exp[i].amt);if(v!==null)act(()=>{B.exp[i].amt=pamt(v,'Expense amount')})};
+const confB=()=>{B.confirmed=true;store('slp_bud',B);hb();drawB()};
+function sum(){const act={};B.exp.forEach(e=>act[e.cat]=(act[e.cat]||0)+e.amt);const rows=Object.entries(B.cats).map(([c,p])=>[c,p,Math.round((act[c]||0)*100)/100]);const tp=Math.round(rows.reduce((s,r)=>s+r[1],0)*100)/100,ta=Math.round(B.exp.reduce((s,e)=>s+e.amt,0)*100)/100,rem=Math.round((B.total-ta)*100)/100,sav=Math.max(0,rem);return{rows,tp,ta,rem,sav,pc:Math.round(sav/B.total*10000)/100,un:Math.round((B.total-tp)*100)/100,over:rows.filter(r=>r[2]>r[1])}}
+function summaryHTML(s){return`<span class="stat">Planned<b>${fmt(s.tp)}</b></span><span class="stat">Actual<b>${fmt(s.ta)}</b></span><span class="stat">Remaining<b>${fmt(s.rem)}</b></span><span class="stat">Savings<b>${fmt(s.sav)} (${s.pc.toFixed(2)}%)</b></span><span class="stat">Unallocated<b>${fmt(s.un)}</b></span>
+${s.over.length?`<div class="err">Overspent: ${s.over.map(r=>`${esc(r[0])} (+${fmt(r[2]-r[1])})`).join(', ')}</div>`:'<p>✅ No category is overspent.</p>'}${s.ta>B.total?'<div class="err">WARNING: overall spending exceeds the monthly budget.</div>':''}${s.tp>B.total?'<div class="err">WARNING: planned amounts exceed the monthly budget.</div>':''}`}
+function drawB(){if(!B)return;const s=sum(),mx=Math.max(1,...s.rows.map(r=>Math.max(r[1],r[2])));
+ $('out2').innerHTML=`<div class="card"><h3>${B.type} – ${B.month} · available ${fmt(B.total)} ${B.confirmed?'<span class="bd W">Confirmed</span>':''}</h3>${summaryHTML(s)}</div>
+<div class="card"><h3>2. Categories &amp; planned amounts</h3><table><tr><th>Category</th><th>Planned (edit)</th><th class="r">Actual</th><th class="r">Difference</th><th>Planned vs actual</th><th></th></tr>${s.rows.map(r=>`<tr><td>${esc(r[0])}</td><td><input value="${r[1]}" onchange="setPl(this.dataset.c,this.value)" data-c="${esc(r[0])}" style="width:104px;padding:4px 7px"></td><td class="r">${fmt(r[2])}</td><td class="r" style="color:${r[2]>r[1]?'var(--rdt)':'inherit'}">${fmt(r[1]-r[2])}</td><td><div class="bar p" style="width:${r[1]/mx*100}%"></div><div class="bar ${r[2]>r[1]?'o':''}" style="width:${r[2]/mx*100}%"></div></td><td><button class="alt" onclick="rmCat(this.dataset.c)" data-c="${esc(r[0])}">✕</button></td></tr>`).join('')}</table>
+<div class="grid w"><div><label>New (custom) category</label><input id="nc" placeholder="e.g. Pet Care"></div><div><label>Planned amount</label><input id="np" value="0"></div></div><div class="row"><button onclick="addCat()">Add category</button></div></div>
+<div class="card"><h3>3. Record expense</h3><div class="grid w"><div><label>Category</label><select id="ec">${Object.keys(B.cats).map(c=>`<option>${esc(c)}</option>`).join('')}</select></div><div><label>Amount (PKR)</label><input id="ea"></div><div><label>Description</label><input id="edc"></div><div><label>Date (YYYY-MM-DD)</label><input id="ed" placeholder="${B.month}-01"></div><div><label>Expense ID (optional)</label><input id="ei"></div></div><div class="row"><button onclick="addExp()">Add expense</button></div>
+<table><tr><th>ID</th><th>Date</th><th>Category</th><th class="r">Amount</th><th>Description</th><th></th></tr>${B.exp.map((e,i)=>`<tr><td>${esc(e.id)}</td><td>${e.date}</td><td>${esc(e.cat)}</td><td class="r">${fmt(e.amt)}</td><td>${esc(e.desc)}</td><td><button class="alt" onclick="editExp(${i})">✎</button> <button class="alt" onclick="delExp(${i})">🗑</button></td></tr>`).join('')||'<tr><td colspan=6 class="mu">No expenses recorded yet.</td></tr>'}</table></div>
+<div class="card"><h3>4. Confirm &amp; report</h3><p class="mu">Any edit removes the confirmation, so a report can never show stale numbers.</p><div class="row"><button class="ok" onclick="confB()">✔ Confirm budget</button><button ${B.confirmed?'':'disabled'} onclick="budPDF()">⬇ Download PDF report</button></div></div>`}
+function budPDF(){const s=sum(),id=rid('BUD'),D=Doc();
+ D.h('Smart Life Planner',24);D.h('Monthly Financial Report',15,'0.3 0.3 0.3 rg');D.table(KV,[['Report ID',id],['Report date',today()],['Prepared by',by()],['Budget month',B.month],['Budget type',B.type],['Total available amount',fmt(B.total)]]);
+ D.h('Category-wise summary');const C4=[{w:215},{w:100,r:1},{w:100,r:1},{w:100,r:1}];D.table(C4,[['Category','Planned','Actual','Difference'],...s.rows.map(r=>[r[0],fmt(r[1]),fmt(r[2]),fmt(r[1]-r[2])]),['TOTAL',fmt(s.tp),fmt(s.ta),fmt(s.tp-s.ta)]],{head:1,total:1});
+ D.h('Financial summary');D.table(AM,[['Total planned expenses',fmt(s.tp)],['Total actual expenses',fmt(s.ta)],['Remaining balance',fmt(s.rem)],['Savings',fmt(s.sav)],['Savings percentage',s.pc.toFixed(2)+'%'],['Unallocated amount',fmt(s.un)]]);
+ D.h('Overspending');if(s.over.length)D.table(C4,[['Category','Planned','Actual','Over by'],...s.over.map(r=>[r[0],fmt(r[1]),fmt(r[2]),fmt(r[2]-r[1])])],{head:1});else D.text('No category is overspent.');
+ if(s.ta>B.total)D.text('WARNING: total actual spending exceeds the monthly budget.',10,1);META={type:'budget',title:`${B.type} budget ${B.month}`};D.save(id+'.pdf',FOOT)}
+applyTheme();
+$('spt').innerHTML=[...'Smart Life Planner'].map((c,i)=>c==' '?'<span style="display:inline-block;width:.3em"></span>':`<span class="ch" style="animation-delay:${(0.15+i*0.07).toFixed(2)}s,${(1.2+i*0.1).toFixed(2)}s">${c}</span>`).join('');
+
+/* ---------- sign in / create account / log out ---------- */
+let aMode='in',aFails=0,aLock=0,idleT=null;
+const NMRE=/^[\p{L}][\p{L}\p{M} .'’-]{1,59}$/u;
+function aTab(m){aMode=m;$('ati').classList.toggle('on',m=='in');$('atu').classList.toggle('on',m=='up');
+ $('afn').classList.toggle('hide',m=='in');$('apc').classList.toggle('hide',m=='in');$('aleg').classList.toggle('hide',m=='in'||!hasLegacy());
+ $('apw').autocomplete=m=='in'?'current-password':'new-password';$('aun').autocomplete=m=='in'?'username':'off';$('abtn').textContent=m=='in'?'Sign in →':'Create account →';showErr('aer')}
+async function aGo(){const btn=$('abtn'),lbl=aMode=='in'?'Sign in →':'Create account →';
+ try{showErr('aer');
+  if(!(window.crypto&&crypto.subtle))throw Error('Secure storage is not available here. Open this page over https (or localhost) in an up-to-date browser.');
+  const wait=Math.ceil((aLock-Date.now())/1000);if(wait>0)throw Error(`Too many wrong attempts. Try again in ${wait} seconds.`);
+  const un=$('aun').value.trim(),pw=$('apw').value;
+  if(!/^[A-Za-z0-9._-]{3,30}$/.test(un))throw Error('Username must be 3–30 characters: letters, numbers, . _ - only.');
+  if(!pw)throw Error('Please enter your password.');
+  const uid=un.toLowerCase(),U=users();
+  if(aMode=='up'){
+   const fn=$('afnv').value.trim().replace(/\s+/g,' ');
+   if(!NMRE.test(fn))throw Error("Full name: use 2–60 letters (spaces . - ' are allowed).");
+   if(pw.length<6)throw Error('Password must be at least 6 characters.');
+   if(pw!==$('apcv').value)throw Error('Passwords do not match.');
+   if(U[uid])throw Error('This username is already taken. Choose another one, or sign in.');
+   btn.disabled=true;btn.textContent='Creating…';
+   const salt=crypto.getRandomValues(new Uint8Array(16)),key=await dkey(pw,salt),data={slp_by:fn},claim=hasLegacy()&&$('alegc').checked;
+   if(claim)PK.forEach(k=>{const r=rawGet(k);if(r!==null)try{data[k]=JSON.parse(r)}catch(e){}});
+   if(!rawSet('slp_u_'+uid,await enc(key,JSON.stringify(data))))throw Error('Browser storage is full or blocked. Free some space and try again.');
+   U[uid]={u:un,salt:u8b(salt),t:Date.now()};
+   if(!rawSet('slp_users',JSON.stringify(U)))throw Error('Browser storage is full or blocked. Free some space and try again.');
+   if(claim)PK.forEach(k=>{try{localStorage.removeItem(k)}catch(e){}});
+   enter(uid,key,data,un)
+  }else{
+   btn.disabled=true;btn.textContent='Checking…';
+   const r=U[uid];let key=null,data=null;
+   if(r){key=await dkey(pw,b8u(r.salt));try{data=await dec(key,rawGet('slp_u_'+uid))}catch(e){}}else await dkey(pw,new Uint8Array(16));
+   if(!data||typeof data!='object'){if(++aFails>=5){aFails=0;aLock=Date.now()+30000}throw Error('Wrong username or password.')}
+   enter(uid,key,data,r.u)
+  }
+ }catch(e){showErr('aer',e.message)}finally{btn.disabled=false;btn.textContent=lbl}}
+function enter(uid,key,data,uname){UID=uid;UKEY=key;UD=data;aFails=0;
+ NAME=load('slp_by')||'';
+ H=load('slp_hist')||{};['trips','budgets','reports'].forEach(k=>{if(!Array.isArray(H[k]))H[k]=[]});UD.slp_hist=H;
+ confirmed=load('slp_trip');pending=null;B=load('slp_bud');
+ clearForm();
+ $('hwho').innerHTML=`<span>👤 ${esc(NAME||uname)} <span class="mu">(@${esc(uname)})</span></span><button class="alt" onclick="logout()">Log out</button><button class="alt" onclick="delAcct()">Delete my account</button>`;
+ if(confirmed)draw();if(B)drawB();idleReset();show('home');window.scrollTo(0,0)}
+function clearForm(){['aun','afnv','apw','apcv','nmi'].forEach(i=>{const e=$(i);if(e)e.value=''});const c=$('alegc');if(c)c.checked=false}
+addEventListener('pageshow',()=>{if(!UID)clearForm()});
+function wipeAndReload(){clearForm();UKEY=UD=UID=null;try{sessionStorage.setItem('slp_skip','1')}catch(e){}location.reload()}
+async function logout(){try{await saveQ}catch(e){}wipeAndReload()}
+async function delAcct(){if(!confirm('Delete your account and ALL its saved plans, budgets and reports from this browser? This cannot be undone.'))return;
+ const uid=UID;UKEY=null;try{await saveQ}catch(e){}try{localStorage.removeItem('slp_u_'+uid);const U=users();delete U[uid];rawSet('slp_users',JSON.stringify(U))}catch(e){}wipeAndReload()}
+function idleReset(){clearTimeout(idleT);if(UID)idleT=setTimeout(logout,20*60*1000)}
+['click','keydown','pointerdown','touchstart','scroll'].forEach(e=>addEventListener(e,idleReset,{passive:true}));
+let skip=false;try{skip=sessionStorage.getItem('slp_skip')=='1';sessionStorage.removeItem('slp_skip')}catch(e){}
+if(skip)goHome();else splashT=setTimeout(goHome,matchMedia('(prefers-reduced-motion:reduce)').matches?900:3200);
+if(confirmed)draw();if(B)drawB();
+</script></body></html>

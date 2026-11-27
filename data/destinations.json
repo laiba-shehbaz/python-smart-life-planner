@@ -1,0 +1,405 @@
+{
+  "disclaimer": "All costs are estimates based on typical prices and are NOT guaranteed market prices. Actual prices vary by season, availability and provider. Prices are in PKR for the Car/Hotel baseline from Islamabad.",
+  "settings": {
+    "emergency_percentage": 10,
+    "local_travel_factor": 0.15,
+    "departure_city_factors": {
+      "Islamabad": 1.0,
+      "Rawalpindi": 1.0,
+      "Peshawar": 1.1,
+      "Lahore": 1.25,
+      "Faisalabad": 1.35,
+      "Multan": 1.6,
+      "Quetta": 2.0,
+      "Karachi": 2.2
+    },
+    "transport_multipliers": {
+      "Bus": 0.6,
+      "Car": 1.0,
+      "Flight": 2.4
+    },
+    "accommodation_multipliers": {
+      "Guest House": 0.5,
+      "Hotel": 1.0,
+      "Resort": 1.9
+    },
+    "category_multipliers": {
+      "Budget": 0.7,
+      "Standard": 1.0,
+      "Premium": 1.6
+    },
+    "category_defaults": {
+      "Budget": {
+        "transport": "Bus",
+        "accommodation": "Guest House"
+      },
+      "Standard": {
+        "transport": "Car",
+        "accommodation": "Hotel"
+      },
+      "Premium": {
+        "transport": "Car",
+        "accommodation": "Resort"
+      }
+    }
+  },
+  "destinations": [
+    {
+      "name": "Murree",
+      "region": "Punjab",
+      "category": "Mountains",
+      "transport_cost_pp": 2500,
+      "accommodation_per_room_night": 9000,
+      "food_pp_day": 2500,
+      "activities_pp_day": 800,
+      "misc_pp_day": 500,
+      "room_capacity": 4,
+      "travel_categories": [
+        "Budget",
+        "Standard",
+        "Premium"
+      ],
+      "transport_modes": [
+        "Bus",
+        "Car"
+      ],
+      "accommodation_types": [
+        "Guest House",
+        "Hotel",
+        "Resort"
+      ],
+      "highlights": [
+        "Mall Road",
+        "Pindi Point",
+        "Patriata (New Murree)",
+        "Kashmir Point"
+      ],
+      "activities": [
+        "Chairlift ride",
+        "Cable car",
+        "Horse riding"
+      ]
+    },
+    {
+      "name": "Nathiagali",
+      "region": "Khyber Pakhtunkhwa",
+      "category": "Mountains",
+      "transport_cost_pp": 3500,
+      "accommodation_per_room_night": 9500,
+      "food_pp_day": 2500,
+      "activities_pp_day": 800,
+      "misc_pp_day": 600,
+      "room_capacity": 3,
+      "travel_categories": [
+        "Standard",
+        "Premium"
+      ],
+      "transport_modes": [
+        "Bus",
+        "Car"
+      ],
+      "accommodation_types": [
+        "Guest House",
+        "Hotel",
+        "Resort"
+      ],
+      "highlights": [
+        "Mukeshpuri Top",
+        "Miranjani Trek viewpoint",
+        "Dunga Gali Pipeline Track"
+      ],
+      "activities": [
+        "Forest hike",
+        "Nature photography",
+        "Bonfire evening"
+      ]
+    },
+    {
+      "name": "Swat",
+      "region": "Khyber Pakhtunkhwa",
+      "category": "Lakes & Nature",
+      "transport_cost_pp": 9000,
+      "accommodation_per_room_night": 10000,
+      "food_pp_day": 2800,
+      "activities_pp_day": 1500,
+      "misc_pp_day": 800,
+      "room_capacity": 3,
+      "travel_categories": [
+        "Budget",
+        "Standard",
+        "Premium"
+      ],
+      "transport_modes": [
+        "Bus",
+        "Car"
+      ],
+      "accommodation_types": [
+        "Guest House",
+        "Hotel",
+        "Resort"
+      ],
+      "highlights": [
+        "Mingora Buddhist sites",
+        "Fizagat Park",
+        "Malam Jabba"
+      ],
+      "activities": [
+        "River rafting",
+        "Jeep safari",
+        "Chairlift at Malam Jabba"
+      ]
+    },
+    {
+      "name": "Kalam",
+      "region": "Khyber Pakhtunkhwa",
+      "category": "Lakes & Nature",
+      "transport_cost_pp": 11000,
+      "accommodation_per_room_night": 11000,
+      "food_pp_day": 2800,
+      "activities_pp_day": 1800,
+      "misc_pp_day": 900,
+      "room_capacity": 3,
+      "travel_categories": [
+        "Budget",
+        "Standard",
+        "Premium"
+      ],
+      "transport_modes": [
+        "Bus",
+        "Car"
+      ],
+      "accommodation_types": [
+        "Guest House",
+        "Hotel",
+        "Resort"
+      ],
+      "highlights": [
+        "Mahodand Lake",
+        "Ushu Forest",
+        "Spin Khwar"
+      ],
+      "activities": [
+        "Jeep safari",
+        "Boating",
+        "Forest trek"
+      ]
+    },
+    {
+      "name": "Hunza",
+      "region": "Gilgit-Baltistan",
+      "category": "Mountains",
+      "transport_cost_pp": 18000,
+      "accommodation_per_room_night": 12000,
+      "food_pp_day": 3000,
+      "activities_pp_day": 2500,
+      "misc_pp_day": 1000,
+      "room_capacity": 3,
+      "travel_categories": [
+        "Budget",
+        "Standard",
+        "Premium"
+      ],
+      "transport_modes": [
+        "Bus",
+        "Car"
+      ],
+      "accommodation_types": [
+        "Guest House",
+        "Hotel",
+        "Resort"
+      ],
+      "highlights": [
+        "Baltit Fort",
+        "Attabad Lake",
+        "Eagle's Nest viewpoint",
+        "Passu Cones"
+      ],
+      "activities": [
+        "Boating on Attabad Lake",
+        "Cultural walk",
+        "Sunrise at Eagle's Nest"
+      ]
+    },
+    {
+      "name": "Skardu",
+      "region": "Gilgit-Baltistan",
+      "category": "Mountains",
+      "transport_cost_pp": 22000,
+      "accommodation_per_room_night": 13000,
+      "food_pp_day": 3200,
+      "activities_pp_day": 3000,
+      "misc_pp_day": 1200,
+      "room_capacity": 3,
+      "travel_categories": [
+        "Budget",
+        "Standard",
+        "Premium"
+      ],
+      "transport_modes": [
+        "Bus",
+        "Car",
+        "Flight"
+      ],
+      "accommodation_types": [
+        "Guest House",
+        "Hotel",
+        "Resort"
+      ],
+      "highlights": [
+        "Shangrila Resort Lake",
+        "Upper Kachura Lake",
+        "Deosai Plains",
+        "Skardu Fort (Kharpocho)"
+      ],
+      "activities": [
+        "Jeep safari at Deosai",
+        "Boating",
+        "Cold-desert sand dunes"
+      ]
+    },
+    {
+      "name": "Naran",
+      "region": "Khyber Pakhtunkhwa",
+      "category": "Lakes & Nature",
+      "transport_cost_pp": 10000,
+      "accommodation_per_room_night": 10500,
+      "food_pp_day": 2800,
+      "activities_pp_day": 2000,
+      "misc_pp_day": 900,
+      "room_capacity": 4,
+      "travel_categories": [
+        "Budget",
+        "Standard",
+        "Premium"
+      ],
+      "transport_modes": [
+        "Bus",
+        "Car"
+      ],
+      "accommodation_types": [
+        "Guest House",
+        "Hotel",
+        "Resort"
+      ],
+      "highlights": [
+        "Lake Saif-ul-Malook",
+        "Lalazar",
+        "Babusar Top viewpoint"
+      ],
+      "activities": [
+        "Jeep to the lake",
+        "Pony ride",
+        "Boating"
+      ]
+    },
+    {
+      "name": "Lahore",
+      "region": "Punjab",
+      "category": "Historical Places",
+      "transport_cost_pp": 9000,
+      "accommodation_per_room_night": 9000,
+      "food_pp_day": 2800,
+      "activities_pp_day": 1200,
+      "misc_pp_day": 800,
+      "room_capacity": 4,
+      "travel_categories": [
+        "Budget",
+        "Standard",
+        "Premium"
+      ],
+      "transport_modes": [
+        "Bus",
+        "Car",
+        "Flight"
+      ],
+      "accommodation_types": [
+        "Guest House",
+        "Hotel",
+        "Resort"
+      ],
+      "highlights": [
+        "Badshahi Mosque",
+        "Lahore Fort",
+        "Walled City & Delhi Gate",
+        "Wagah Border ceremony"
+      ],
+      "activities": [
+        "Heritage walk",
+        "Food street tour",
+        "Shopping at Anarkali"
+      ]
+    },
+    {
+      "name": "Islamabad",
+      "region": "Islamabad Capital Territory",
+      "category": "Lakes & Nature",
+      "transport_cost_pp": 2000,
+      "accommodation_per_room_night": 10000,
+      "food_pp_day": 3000,
+      "activities_pp_day": 1000,
+      "misc_pp_day": 800,
+      "room_capacity": 3,
+      "travel_categories": [
+        "Budget",
+        "Standard",
+        "Premium"
+      ],
+      "transport_modes": [
+        "Bus",
+        "Car",
+        "Flight"
+      ],
+      "accommodation_types": [
+        "Guest House",
+        "Hotel",
+        "Resort"
+      ],
+      "highlights": [
+        "Faisal Mosque",
+        "Daman-e-Koh",
+        "Pakistan Monument",
+        "Rawal Lake"
+      ],
+      "activities": [
+        "Margalla Hills hike",
+        "Boating at Rawal Lake",
+        "Lok Virsa museum visit"
+      ]
+    },
+    {
+      "name": "Taxila",
+      "region": "Punjab",
+      "category": "Historical Places",
+      "transport_cost_pp": 3000,
+      "accommodation_per_room_night": 7000,
+      "food_pp_day": 2200,
+      "activities_pp_day": 900,
+      "misc_pp_day": 500,
+      "room_capacity": 4,
+      "travel_categories": [
+        "Budget",
+        "Standard",
+        "Premium"
+      ],
+      "transport_modes": [
+        "Bus",
+        "Car"
+      ],
+      "accommodation_types": [
+        "Guest House",
+        "Hotel"
+      ],
+      "highlights": [
+        "Taxila Museum",
+        "Dharmarajika Stupa",
+        "Jaulian Monastery",
+        "Bhir Mound"
+      ],
+      "activities": [
+        "Guided heritage tour",
+        "Museum visit",
+        "Photography walk"
+      ]
+    }
+  ]
+}

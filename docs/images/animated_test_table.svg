@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 544" width="760" height="544" role="img" aria-label="Animated test results table">
+<style>
+    .t{font:15px Helvetica,Arial,sans-serif;fill:#1b2a41}.h{font:700 15px Helvetica,Arial,sans-serif;fill:#fff}
+    .ttl{font:700 22px Helvetica,Arial,sans-serif;fill:#1F3A5F}.sub{font:13px Helvetica,Arial,sans-serif;fill:#5b6b82}
+    .row{opacity:0;animation:rowin 14s ease-out infinite}
+    .bar{transform-box:fill-box;transform-origin:left;transform:scaleX(0);animation:barin 14s ease-out infinite}
+    .tot{font:700 15px Helvetica,Arial,sans-serif;fill:#1F3A5F}
+    @keyframes rowin{0%{opacity:0;transform:translateX(-40px)}4%{opacity:1;transform:none}90%{opacity:1;transform:none}98%,100%{opacity:0;transform:translateX(20px)}}
+    @keyframes barin{0%{transform:scaleX(0)}8%{transform:scaleX(1)}90%{transform:scaleX(1)}98%,100%{transform:scaleX(0)}}
+    </style>
+<rect width="760" height="544" rx="14" fill="#F6F8FB" stroke="#C5CCD6"/>
+<text class="ttl" x="28" y="40">Automated test results (live numbers from pytest)</text>
+<text class="sub" x="28" y="62">386 passed  |  statement coverage 97%</text>
+<rect x="20" y="70" width="720" height="30" rx="6" fill="#1F3A5F"/>
+<text class="h" x="34" y="92">Test module</text><text class="h" x="360" y="92">Tests</text><text class="h" x="440" y="92">Share of suite</text>
+<g class="row" style="animation-delay:0.35s"><rect x="20" y="110" width="720" height="32" rx="4" fill="#EEF2F7"/><text class="t" x="34" y="130">test_budget_manager.py</text><text class="t" x="360" y="130">44</text><rect class="bar" style="animation-delay:0.35s" x="440" y="116" width="160" height="14" rx="3" fill="#1B6E3C"/></g>
+<g class="row" style="animation-delay:0.70s"><rect x="20" y="144" width="720" height="32" rx="4" fill="#FFFFFF"/><text class="t" x="34" y="164">test_data_manager.py</text><text class="t" x="360" y="164">31</text><rect class="bar" style="animation-delay:0.70s" x="440" y="150" width="112" height="14" rx="3" fill="#1B6E3C"/></g>
+<g class="row" style="animation-delay:1.05s"><rect x="20" y="178" width="720" height="32" rx="4" fill="#EEF2F7"/><text class="t" x="34" y="198">test_feasibility_checker.py</text><text class="t" x="360" y="198">16</text><rect class="bar" style="animation-delay:1.05s" x="440" y="184" width="58" height="14" rx="3" fill="#1B6E3C"/></g>
+<g class="row" style="animation-delay:1.40s"><rect x="20" y="212" width="720" height="32" rx="4" fill="#FFFFFF"/><text class="t" x="34" y="232">test_main_menu.py</text><text class="t" x="360" y="232">27</text><rect class="bar" style="animation-delay:1.40s" x="440" y="218" width="98" height="14" rx="3" fill="#1B6E3C"/></g>
+<g class="row" style="animation-delay:1.75s"><rect x="20" y="246" width="720" height="32" rx="4" fill="#EEF2F7"/><text class="t" x="34" y="266">test_models_and_helpers.py</text><text class="t" x="360" y="266">77</text><rect class="bar" style="animation-delay:1.75s" x="440" y="252" width="280" height="14" rx="3" fill="#1B6E3C"/></g>
+<g class="row" style="animation-delay:2.10s"><rect x="20" y="280" width="720" height="32" rx="4" fill="#FFFFFF"/><text class="t" x="34" y="300">test_pdf_generator.py</text><text class="t" x="360" y="300">28</text><rect class="bar" style="animation-delay:2.10s" x="440" y="286" width="101" height="14" rx="3" fill="#1B6E3C"/></g>
+<g class="row" style="animation-delay:2.45s"><rect x="20" y="314" width="720" height="32" rx="4" fill="#EEF2F7"/><text class="t" x="34" y="334">test_trip_calculator.py</text><text class="t" x="360" y="334">20</text><rect class="bar" style="animation-delay:2.45s" x="440" y="320" width="72" height="14" rx="3" fill="#1B6E3C"/></g>
+<g class="row" style="animation-delay:2.80s"><rect x="20" y="348" width="720" height="32" rx="4" fill="#FFFFFF"/><text class="t" x="34" y="368">test_trip_optimizer.py</text><text class="t" x="360" y="368">17</text><rect class="bar" style="animation-delay:2.80s" x="440" y="354" width="61" height="14" rx="3" fill="#1B6E3C"/></g>
+<g class="row" style="animation-delay:3.15s"><rect x="20" y="382" width="720" height="32" rx="4" fill="#EEF2F7"/><text class="t" x="34" y="402">test_trip_planner.py</text><text class="t" x="360" y="402">51</text><rect class="bar" style="animation-delay:3.15s" x="440" y="388" width="185" height="14" rx="3" fill="#1B6E3C"/></g>
+<g class="row" style="animation-delay:3.50s"><rect x="20" y="416" width="720" height="32" rx="4" fill="#FFFFFF"/><text class="t" x="34" y="436">test_validators.py</text><text class="t" x="360" y="436">75</text><rect class="bar" style="animation-delay:3.50s" x="440" y="422" width="272" height="14" rx="3" fill="#1B6E3C"/></g>
+<g class="row" style="animation-delay:3.85s"><rect x="20" y="450" width="720" height="32" rx="4" fill="#DCE6F2"/><text class="tot" x="34" y="470">TOTAL</text><text class="tot" x="360" y="470">386</text><text class="tot" x="440" y="470">all passing</text></g>
+</svg>

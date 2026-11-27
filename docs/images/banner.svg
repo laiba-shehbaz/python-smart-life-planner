@@ -1,0 +1,67 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 270" width="1200" height="270" role="img" aria-label="Smart Life Planner">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#0F2747"><animate attributeName="stop-color" values="#0F2747;#13335c;#0F2747" dur="10s" repeatCount="indefinite"/></stop>
+      <stop offset="0.6" stop-color="#1F3A5F"/>
+      <stop offset="1" stop-color="#1B6E3C"><animate attributeName="stop-color" values="#1B6E3C;#2a8a52;#1B6E3C" dur="10s" repeatCount="indefinite"/></stop>
+    </linearGradient>
+    <linearGradient id="snow" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#FFFFFF"/><stop offset="1" stop-color="#DCE6F2"/></linearGradient>
+    <linearGradient id="shine" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#fff" stop-opacity="0"/><stop offset="0.5" stop-color="#fff" stop-opacity="0.55"/><stop offset="1" stop-color="#fff" stop-opacity="0"/>
+    </linearGradient>
+    <clipPath id="titleClip"><rect x="60" y="62" width="720" height="80"/></clipPath>
+    <style>
+      .title { font: 700 62px Helvetica, Arial, sans-serif; fill: #fff; animation: rise 1.2s ease-out both; }
+      .sub   { font: 24px Helvetica, Arial, sans-serif; fill: #DCE6F2; animation: rise 1.2s .3s ease-out both; }
+      .pill  { fill: #fff; fill-opacity: .15; animation: pop 1s ease-out both; }
+      .pilltxt { font: 17px Helvetica, Arial, sans-serif; fill: #fff; animation: pop 1s ease-out both; }
+      .cloud { fill: #fff; opacity: .16; animation: drift 24s linear infinite; }
+      .cloud.c2 { animation-duration: 34s; animation-delay: -12s; opacity: .1; }
+      .bar { transform-box: fill-box; transform-origin: bottom; animation: grow 4s ease-in-out infinite; }
+      .b2 { animation-delay: .4s; } .b3 { animation-delay: .8s; }
+      .route { stroke-dasharray: 8 10; animation: dash 1.4s linear infinite; }
+      .sweep { animation: sweep 5s ease-in-out infinite; }
+      .star { animation: twinkle 3s ease-in-out infinite; }
+      @keyframes rise { from { opacity: 0; transform: translateY(22px); } to { opacity: 1; transform: none; } }
+      @keyframes pop { from { opacity: 0; transform: scale(.85); } to { opacity: 1; transform: none; } }
+      @keyframes drift { from { transform: translateX(-260px); } to { transform: translateX(1460px); } }
+      @keyframes grow { 0%,100% { transform: scaleY(.45); } 50% { transform: scaleY(1); } }
+      @keyframes dash { to { stroke-dashoffset: -36; } }
+      @keyframes sweep { 0% { transform: translateX(-300px); } 60%,100% { transform: translateX(900px); } }
+      @keyframes twinkle { 0%,100% { opacity: .25; } 50% { opacity: 1; } }
+    </style>
+  </defs>
+  <rect width="1200" height="270" fill="url(#bg)"/>
+  <!-- twinkling stars -->
+  <g fill="#fff"><circle class="star" cx="700" cy="40" r="2"/><circle class="star" cx="820" cy="26" r="1.6" style="animation-delay:-1s"/><circle class="star" cx="1000" cy="48" r="2" style="animation-delay:-2s"/><circle class="star" cx="1120" cy="30" r="1.5" style="animation-delay:-.5s"/></g>
+  <!-- drifting clouds -->
+  <g class="cloud"><ellipse cx="0" cy="60" rx="70" ry="18"/><ellipse cx="40" cy="48" rx="45" ry="16"/></g>
+  <g class="cloud c2"><ellipse cx="0" cy="110" rx="90" ry="20"/><ellipse cx="50" cy="96" rx="55" ry="18"/></g>
+  <!-- mountains -->
+  <polygon points="640,340 790,100 870,200 940,125 1080,340" fill="#2E5A8C" opacity=".85"/>
+  <polygon points="790,100 755,158 780,148 800,170 825,146 845,170 870,200 850,148" fill="url(#snow)"/>
+  <polygon points="940,125 915,168 935,160 955,178 975,158" fill="url(#snow)"/>
+  <polygon points="900,340 1015,180 1120,340" fill="#173B63" opacity=".92"/>
+  <!-- route and plane -->
+  <path id="route" d="M 560 120 C 700 40, 900 40, 1060 110" fill="none" stroke="#F2C94C" stroke-width="2.5" stroke-linecap="round" class="route" opacity=".8"/>
+  <g>
+    <path d="M0,0 L-14,-6 L-4,0 L-14,6 Z" fill="#fff"/>
+    <animateMotion dur="7s" repeatCount="indefinite" rotate="auto"><mpath href="#route"/></animateMotion>
+  </g>
+  <!-- animated budget bars -->
+  <g transform="translate(1040,135)">
+    <rect class="bar" x="0" y="20" width="24" height="90" rx="3" fill="#F2C94C"/>
+    <rect class="bar b2" x="34" y="20" width="24" height="90" rx="3" fill="#F2C94C"/>
+    <rect class="bar b3" x="68" y="20" width="24" height="90" rx="3" fill="#6FCF97"/>
+  </g>
+  <!-- text -->
+  <text class="title" x="60" y="118">Smart Life Planner</text>
+  <g clip-path="url(#titleClip)"><rect class="sweep" x="0" y="62" width="120" height="80" fill="url(#shine)" transform="skewX(-20)"/></g>
+  <text class="sub" x="62" y="164">Pakistan Trip Planner  +  Monthly Budget Manager</text>
+  <g>
+    <rect class="pill" x="62" y="196" width="140" height="34" rx="17"/><text class="pilltxt" x="84" y="218">Python 3.10+</text>
+    <rect class="pill" x="214" y="196" width="120" height="34" rx="17" style="animation-delay:.15s"/><text class="pilltxt" x="236" y="218" style="animation-delay:.15s">reportlab</text>
+    <rect class="pill" x="346" y="196" width="104" height="34" rx="17" style="animation-delay:.3s"/><text class="pilltxt" x="368" y="218" style="animation-delay:.3s">Pytest</text>
+    <rect class="pill" x="462" y="196" width="84" height="34" rx="17" style="animation-delay:.45s"/><text class="pilltxt" x="484" y="218" style="animation-delay:.45s">OOP</text>
+  </g>
+</svg>
